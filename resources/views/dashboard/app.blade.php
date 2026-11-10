@@ -1,342 +1,482 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    <title>@yield('title', 'Dashboard') - SLOTIN</title>
+@section('title', 'Dashboard')
+@section('page-title', 'Dashboard')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+@section('content')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-          rel="stylesheet">
+{{-- HEADER DASHBOARD --}}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-1" style="color: #11224e;">
+            Dashboard Overview
+        </h4>
+        <p class="text-muted mb-0">
+            Ringkasan kondisi parkir SLOTIN secara real-time.
+        </p>
+    </div>
 
-    <style>
-        :root {
-            --primary: #172554;
-            --primary-light: #263b75;
-            --accent: #f87b1b;
-            --background: #f5f7fb;
-            --sidebar-width: 250px;
-        }
+    <a href="{{ route('scan.index') }}"
+       class="btn text-white mt-3 mt-md-0"
+       style="background: #f87b1b;">
+        <i class="bi bi-camera-video me-2"></i>
+        Mulai Scan
+    </a>
+</div>
 
-        * {
-            box-sizing: border-box;
-        }
 
-        body {
-            background: var(--background);
-            font-family: Arial, sans-serif;
-            color: #1e293b;
-            margin: 0;
-        }
+{{-- STATISTIC CARDS --}}
+<div class="row g-3 mb-4">
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: var(--primary);
-            color: white;
-            padding: 25px 16px;
-            z-index: 1000;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 10px 30px;
-        }
-
-        .brand-icon {
-            width: 42px;
-            height: 42px;
-            background: var(--accent);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
-        .brand-name {
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        .sidebar-label {
-            color: #94a3b8;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 20px 10px 12px;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            color: #cbd5e1;
-            text-decoration: none;
-            padding: 13px 14px;
-            margin-bottom: 7px;
-            border-radius: 9px;
-            transition: .2s;
-            font-size: 14px;
-        }
-
-        .sidebar-link i {
-            font-size: 18px;
-        }
-
-        .sidebar-link:hover,
-        .sidebar-link.active {
-            color: white;
-            background: var(--accent);
-        }
-
-        .main-content {
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-        }
-
-        .topbar {
-            min-height: 75px;
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 30px;
-        }
-
-        .page-title {
-            font-size: 21px;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .content-wrapper {
-            padding: 30px;
-        }
-
-        .stat-card,
-        .section-card {
-            background: white;
-            border: 1px solid #edf0f5;
-            border-radius: 14px;
-            padding: 22px;
-            height: 100%;
-        }
-
-        .stat-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
-        }
-
-        .stat-value {
-            font-size: 27px;
-            font-weight: 800;
-            margin: 15px 0 4px;
-        }
-
-        .stat-label {
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .zone-card {
-            background: white;
-            border: 1px solid #e9edf3;
-            border-radius: 12px;
-            padding: 18px;
-            height: 100%;
-        }
-
-        .zone-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        .table th {
-            color: #64748b;
-            font-size: 12px;
-            text-transform: uppercase;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .table td {
-            font-size: 13px;
-            vertical-align: middle;
-        }
-
-        .btn-primary-custom {
-            background: var(--primary);
-            color: white;
-            border: none;
-        }
-
-        .btn-primary-custom:hover {
-            background: var(--primary-light);
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .content-wrapper {
-                padding: 18px;
-            }
-
-            .topbar {
-                padding: 12px 18px;
-            }
-        }
-    </style>
-
-    @stack('styles')
-</head>
-
-<body>
-
-    <aside class="sidebar">
-
-        <div class="brand">
-            <div class="brand-icon">
-                <i class="bi bi-p-square-fill"></i>
-            </div>
-
-            <div class="brand-name">SLOTIN</div>
-        </div>
-
-        <div class="sidebar-label">Main Menu</div>
-
-        <a href="{{ route('dashboard') }}"
-           class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <i class="bi bi-grid"></i>
-            Dashboard
-        </a>
-
-        <a href="{{ route('scan.index') }}"
-           class="sidebar-link {{ request()->routeIs('scan.*') ? 'active' : '' }}">
-            <i class="bi bi-camera-video"></i>
-            Scan Parkir
-        </a>
-
-        <a href="{{ route('zones.index') }}"
-           class="sidebar-link {{ request()->routeIs('zones.*') ? 'active' : '' }}">
-            <i class="bi bi-geo-alt"></i>
-            Data Zona
-        </a>
-
-        <a href="{{ route('history.index') }}"
-           class="sidebar-link {{ request()->routeIs('history.*') ? 'active' : '' }}">
-            <i class="bi bi-clock-history"></i>
-            Riwayat Scan
-        </a>
-
-        <div class="sidebar-label mt-5">System</div>
-
-        <div class="px-3 py-3 small text-white-50">
-            SLOTIN Smart Parking<br>
-            <span class="text-white">MVP Version 1.0</span>
-        </div>
-
-        <div class="px-2 mt-3">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-
-                <button type="submit"
-                        class="sidebar-link border-0 bg-transparent w-100 text-start">
-                    <i class="bi bi-box-arrow-left"></i>
-                    Logout
-                </button>
-            </form>
-        </div>
-
-    </aside>
-
-    <main class="main-content">
-
-        <header class="topbar">
-
-            <h5 class="page-title">
-                @yield('page-title', 'Dashboard')
-            </h5>
-
-            <div class="d-flex align-items-center gap-3">
-
-                <div class="text-end">
-                    <div class="fw-bold small">
-                        {{ Auth::user()->name }}
+    {{-- TOTAL ZONA --}}
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small mb-2">Total Zona</p>
+                        <h3 class="fw-bold mb-0">
+                            {{ $totalZones }}
+                        </h3>
                     </div>
 
-                    <div class="text-muted text-capitalize"
-                         style="font-size: 11px;">
-                        {{ Auth::user()->role }}
+                    <div class="rounded-3 p-3"
+                         style="background: #e8edff; color: #263b75;">
+                        <i class="bi bi-geo-alt fs-3"></i>
                     </div>
                 </div>
 
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
-                     style="width: 40px; height: 40px;">
-                    <i class="bi bi-person-fill fs-5"></i>
+                <small class="text-muted mt-3 d-block">
+                    Zona parkir terdaftar
+                </small>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- TOTAL MOTOR --}}
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small mb-2">Motor Terdeteksi</p>
+                        <h3 class="fw-bold mb-0">
+                            {{ $totalMotorcycles }}
+                        </h3>
+                    </div>
+
+                    <div class="rounded-3 p-3"
+                         style="background: #fff0e5; color: #f87b1b;">
+                        <i class="bi bi-bicycle fs-3"></i>
+                    </div>
                 </div>
 
+                <small class="text-muted mt-3 d-block">
+                    Total motor pada zona terpantau
+                </small>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- KAPASITAS TERSEDIA --}}
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small mb-2">Slot Tersedia</p>
+                        <h3 class="fw-bold mb-0">
+                            {{ $availableCapacity }}
+                        </h3>
+                    </div>
+
+                    <div class="rounded-3 p-3"
+                         style="background: #e6f7ed; color: #198754;">
+                        <i class="bi bi-check-circle fs-3"></i>
+                    </div>
+                </div>
+
+                <small class="text-muted mt-3 d-block">
+                    Sisa kapasitas zona terpantau
+                </small>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- ZONA TIDAK TERPANTAU --}}
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small mb-2">Belum Terpantau</p>
+                        <h3 class="fw-bold mb-0">
+                            {{ $unmonitoredZones }}
+                        </h3>
+                    </div>
+
+                    <div class="rounded-3 p-3"
+                         style="background: #f1f1f1; color: #6c757d;">
+                        <i class="bi bi-camera-video-off fs-3"></i>
+                    </div>
+                </div>
+
+                <small class="text-muted mt-3 d-block">
+                    Zona belum menerima hasil scan
+                </small>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{{-- STATUS ZONA --}}
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-white border-0 px-4 pt-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold mb-1" style="color: #11224e;">
+                    Status Zona Parkir
+                </h5>
+                <p class="text-muted small mb-0">
+                    Informasi kapasitas dan kondisi setiap zona.
+                </p>
             </div>
 
-        </header>
+            <a href="{{ route('zones.index') }}"
+               class="text-decoration-none small fw-semibold"
+               style="color: #f87b1b;">
+                Lihat Semua Zona
+                <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
 
-        <div class="content-wrapper">
+    <div class="card-body px-4 pb-4">
 
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show">
-                    {{ session('success') }}
+        <div class="row g-3">
 
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert">
-                    </button>
+            @forelse($zones as $zone)
+
+                @php
+                    $isMonitored = !is_null($zone->current_count);
+
+                    $currentCount = $zone->current_count ?? 0;
+
+                    $capacity = $zone->capacity;
+
+                    $percentage = $capacity > 0
+                        ? min(100, ($currentCount / $capacity) * 100)
+                        : 0;
+
+                    $statusColors = [
+                        'KOSONG' => 'success',
+                        'TERSEDIA' => 'primary',
+                        'PENUH' => 'danger',
+                        'TIDAK TERPANTAU' => 'secondary',
+                    ];
+
+                    $statusColor = $statusColors[$zone->status] ?? 'secondary';
+                @endphp
+
+                <div class="col-12 col-md-6 col-xl-3">
+
+                    <div class="border rounded-3 p-3 h-100">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                            <div>
+                                <h6 class="fw-bold mb-0">
+                                    {{ $zone->name }}
+                                </h6>
+
+                                <small class="text-muted">
+                                    Kapasitas {{ $capacity }} motor
+                                </small>
+                            </div>
+
+                            <span class="badge bg-{{ $statusColor }}">
+                                {{ $zone->status }}
+                            </span>
+
+                        </div>
+
+
+                        @if($isMonitored)
+
+                            <div class="d-flex justify-content-between align-items-end mb-2">
+
+                                <div>
+                                    <h3 class="fw-bold mb-0"
+                                        style="color: #11224e;">
+                                        {{ $currentCount }}
+                                    </h3>
+
+                                    <small class="text-muted">
+                                        Motor terdeteksi
+                                    </small>
+                                </div>
+
+                                <small class="text-muted">
+                                    {{ $capacity > 0 ? round($percentage) : 0 }}%
+                                </small>
+
+                            </div>
+
+
+                            <div class="progress"
+                                 style="height: 8px;">
+
+                                <div class="progress-bar bg-{{ $statusColor }}"
+                                     role="progressbar"
+                                     style="width: {{ $percentage }}%;"
+                                     aria-valuenow="{{ $percentage }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                </div>
+
+                            </div>
+
+                            <small class="text-muted d-block mt-2">
+                                Sisa {{ max(0, $capacity - $currentCount) }} slot
+                            </small>
+
+                        @else
+
+                            <div class="text-center py-3">
+
+                                <i class="bi bi-camera-video-off text-secondary fs-2"></i>
+
+                                <p class="text-muted small mt-2 mb-0">
+                                    Belum ada data scan
+                                </p>
+
+                            </div>
+
+                        @endif
+
+
+                        <div class="border-top mt-3 pt-2">
+
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>
+
+                                @if($zone->last_scanned_at)
+                                    {{ \Carbon\Carbon::parse($zone->last_scanned_at)->format('d/m/Y H:i') }}
+                                @else
+                                    Belum pernah discan
+                                @endif
+                            </small>
+
+                        </div>
+
+                    </div>
+
                 </div>
-            @endif
 
-            @yield('content')
+            @empty
+
+                <div class="col-12 text-center py-4">
+
+                    <i class="bi bi-geo-alt text-muted fs-1"></i>
+
+                    <p class="text-muted mt-2 mb-0">
+                        Belum ada zona parkir terdaftar.
+                    </p>
+
+                </div>
+
+            @endforelse
 
         </div>
 
-    </main>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</div>
 
-    @stack('scripts')
 
-</body>
-</html>
+{{-- RINGKASAN STATUS --}}
+<div class="row g-3 mb-4">
+
+    <div class="col-12 col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="rounded-circle p-3 bg-success bg-opacity-10 text-success">
+                    <i class="bi bi-check-circle fs-4"></i>
+                </div>
+
+                <div>
+                    <h4 class="fw-bold mb-0">{{ $emptyZones }}</h4>
+                    <small class="text-muted">Zona Kosong</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12 col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="rounded-circle p-3 bg-primary bg-opacity-10 text-primary">
+                    <i class="bi bi-car-front fs-4"></i>
+                </div>
+
+                <div>
+                    <h4 class="fw-bold mb-0">{{ $availableZones }}</h4>
+                    <small class="text-muted">Zona Tersedia</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12 col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="rounded-circle p-3 bg-danger bg-opacity-10 text-danger">
+                    <i class="bi bi-exclamation-circle fs-4"></i>
+                </div>
+
+                <div>
+                    <h4 class="fw-bold mb-0">{{ $fullZones }}</h4>
+                    <small class="text-muted">Zona Penuh</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{{-- RIWAYAT SCAN TERBARU --}}
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-white border-0 px-4 pt-4">
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+
+            <div>
+                <h5 class="fw-bold mb-1" style="color: #11224e;">
+                    Riwayat Scan Terbaru
+                </h5>
+
+                <p class="text-muted small mb-0">
+                    Lima aktivitas pemindaian terakhir.
+                </p>
+            </div>
+
+            <a href="{{ route('history.index') }}"
+               class="text-decoration-none small fw-semibold"
+               style="color: #f87b1b;">
+                Lihat Semua Riwayat
+                <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead style="background: #f8f9fc;">
+
+                    <tr>
+                        <th class="px-4 py-3">Zona</th>
+                        <th class="py-3">Petugas</th>
+                        <th class="py-3">Motor Terdeteksi</th>
+                        <th class="py-3">Status</th>
+                        <th class="py-3">Waktu Scan</th>
+                        <th class="py-3">Processing</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @forelse($recentScans as $scan)
+
+                        @php
+                            $historyStatusColors = [
+                                'KOSONG' => 'success',
+                                'TERSEDIA' => 'primary',
+                                'PENUH' => 'danger',
+                            ];
+
+                            $historyColor = $historyStatusColors[$scan->status] ?? 'secondary';
+                        @endphp
+
+                        <tr>
+
+                            <td class="px-4 fw-semibold">
+                                {{ $scan->zone->name ?? 'Zona tidak ditemukan' }}
+                            </td>
+
+                            <td>
+                                {{ $scan->user->name ?? 'Tidak diketahui' }}
+                            </td>
+
+                            <td>
+                                <i class="bi bi-bicycle me-1 text-muted"></i>
+                                {{ $scan->motor_count }} motor
+                            </td>
+
+                            <td>
+                                <span class="badge bg-{{ $historyColor }}">
+                                    {{ $scan->status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ $scan->scanned_at
+                                    ? \Carbon\Carbon::parse($scan->scanned_at)->format('d/m/Y H:i')
+                                    : '-' }}
+                            </td>
+
+                            <td>
+                                {{ $scan->processing_time_ms ?? '-' }}
+                                @if(!is_null($scan->processing_time_ms))
+                                    ms
+                                @endif
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+
+                                <i class="bi bi-clock-history fs-1 text-muted"></i>
+
+                                <p class="text-muted mt-2 mb-0">
+                                    Belum ada riwayat pemindaian.
+                                </p>
+
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+@endsection

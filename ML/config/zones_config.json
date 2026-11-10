@@ -1,0 +1,63 @@
+{
+    "project": "SLOTIN",
+    "model": "yolov8s.pt",
+    "tracker": "bytetrack.yaml",
+    "scan_direction": "left_to_right",
+    "zone_boundary": "pillar_to_next_pillar",
+    "capacity_per_zone": 4,
+    "status_rules": {
+        "0": "KOSONG",
+        "1-3": "TERSEDIA",
+        "4+": "PENUH",
+        "unscanned": "TIDAK TERPANTAU"
+    },
+    "zones": [
+        {
+            "name": "A",
+            "capacity": 4,
+            "motor_count": 2,
+            "status": "TERSEDIA",
+            "scanned": true,
+            "track_ids": [
+                2,
+                6
+            ],
+            "last_scanned": "2026-11-09T12:44:18.965053"
+        },
+        {
+            "name": "B",
+            "capacity": 4,
+            "motor_count": 4,
+            "status": "PENUH",
+            "scanned": true,
+            "track_ids": [
+                1,
+                3,
+                5,
+                7
+            ],
+            "last_scanned": "2026-11-09T12:44:20.708437"
+        },
+        {
+            "name": "C",
+            "capacity": 4,
+            "motor_count": 2,
+            "status": "TERSEDIA",
+            "scanned": true,
+            "track_ids": [
+                4,
+                9
+            ],
+            "last_scanned": "2026-11-09T12:44:22.416469"
+        },
+        {
+            "name": "D",
+            "capacity": 4,
+            "motor_count": null,
+            "status": "TIDAK TERPANTAU",
+            "scanned": false,
+            "track_ids": [],
+            "last_scanned": null
+        }
+    ]
+}

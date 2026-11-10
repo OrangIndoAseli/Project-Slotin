@@ -1,0 +1,38 @@
+{
+    "Video 1": {
+        "A": {
+            "motor_count": 2,
+            "status": "TERSEDIA"
+        },
+        "B": {
+            "motor_count": 4,
+            "status": "PENUH"
+        },
+        "C": {
+            "motor_count": 2,
+            "status": "TERSEDIA"
+        },
+        "D": {
+            "motor_count": null,
+            "status": "TIDAK TERPANTAU"
+        }
+    },
+    "Video 3": {
+        "A": {
+            "motor_count": 2,
+            "status": "TERSEDIA"
+        },
+        "B": {
+            "motor_count": 4,
+            "status": "PENUH"
+        },
+        "C": {
+            "motor_count": 2,
+            "status": "TERSEDIA"
+        },
+        "D": {
+            "motor_count": 1,
+            "status": "TERSEDIA"
+        }
+    }
+}

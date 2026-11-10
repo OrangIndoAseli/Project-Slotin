@@ -1,0 +1,24 @@
+{
+    "sumber": "Video 3 - panorama",
+    "waktu_uji": "2026-11-09T13:02:47.091244",
+    "zona": {
+        "A": {
+            "motor_count": 2,
+            "status": "TERSEDIA"
+        },
+        "B": {
+            "motor_count": 4,
+            "status": "PENUH"
+        },
+        "C": {
+            "motor_count": 2,
+            "status": "TERSEDIA"
+        },
+        "D": {
+            "motor_count": 1,
+            "status": "TERSEDIA"
+        }
+    },
+    "deteksi_di_luar_zona": 3,
+    "catatan": "Hasil deteksi pada panorama, perlu validasi okupansi."
+}
