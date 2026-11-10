@@ -13,6 +13,13 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'slotin_ai' => [
+    'ws_url' => env(
+        'SLOTIN_AI_WS_URL',
+        'ws://127.0.0.1:8001/ws/camera'
+    ),
+    ],
+
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
