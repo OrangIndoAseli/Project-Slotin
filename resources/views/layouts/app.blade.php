@@ -7,7 +7,10 @@
 
     <title>@yield('title', 'Dashboard') - SLOTIN</title>
 
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <style>
@@ -30,6 +33,7 @@
             margin: 0;
         }
 
+        /* SIDEBAR */
         .sidebar {
             position: fixed;
             top: 0;
@@ -40,8 +44,13 @@
             color: white;
             padding: 25px 16px;
             z-index: 1000;
+
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
+        /* BRAND */
         .brand {
             display: flex;
             align-items: center;
@@ -66,6 +75,7 @@
             letter-spacing: 1px;
         }
 
+        /* SIDEBAR MENU */
         .sidebar-label {
             color: #94a3b8;
             font-size: 11px;
@@ -79,6 +89,7 @@
             display: flex;
             align-items: center;
             gap: 13px;
+            width: 100%;
             color: #cbd5e1;
             text-decoration: none;
             padding: 13px 14px;
@@ -98,11 +109,61 @@
             background: var(--accent);
         }
 
+        /* SYSTEM INFO */
+        .system-info {
+            padding: 12px 10px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .system-info span {
+            color: white;
+        }
+
+        /* LOGOUT */
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,.12);
+        }
+
+        .logout-form {
+            width: 100%;
+            margin: 0;
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            width: 100%;
+            padding: 13px 14px;
+            background: transparent;
+            border: none;
+            border-radius: 9px;
+            color: #fca5a5;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .logout-button i {
+            font-size: 18px;
+        }
+
+        .logout-button:hover {
+            background: rgba(239, 68, 68, .15);
+            color: white;
+        }
+
+        /* MAIN CONTENT */
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
         }
 
+        /* TOPBAR */
         .topbar {
             height: 75px;
             background: white;
@@ -119,6 +180,7 @@
             margin: 0;
         }
 
+        /* CONTENT */
         .content-wrapper {
             padding: 30px;
         }
@@ -199,11 +261,13 @@
             color: white;
         }
 
+        /* RESPONSIVE */
         @media (max-width: 768px) {
             .sidebar {
                 position: relative;
                 width: 100%;
                 height: auto;
+                min-height: auto;
             }
 
             .main-content {
@@ -225,72 +289,112 @@
 
 <body>
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
+
+        <!-- BRAND -->
         <div class="brand">
             <div class="brand-icon">
                 <i class="bi bi-p-square-fill"></i>
             </div>
+
             <div class="brand-name">SLOTIN</div>
         </div>
 
+        <!-- MAIN MENU -->
         <div class="sidebar-label">Main Menu</div>
 
         <a href="{{ route('dashboard') }}"
            class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <i class="bi bi-grid"></i>
-            Dashboard
+            <span>Dashboard</span>
         </a>
 
         <a href="{{ route('scan.index') }}"
            class="sidebar-link {{ request()->routeIs('scan.*') ? 'active' : '' }}">
             <i class="bi bi-camera-video"></i>
-            Scan Parkir
+            <span>Scan Parkir</span>
         </a>
 
         <a href="{{ route('zones.index') }}"
            class="sidebar-link {{ request()->routeIs('zones.*') ? 'active' : '' }}">
             <i class="bi bi-geo-alt"></i>
-            Data Zona
+            <span>Data Zona</span>
         </a>
 
         <a href="{{ route('history.index') }}"
            class="sidebar-link {{ request()->routeIs('history.*') ? 'active' : '' }}">
             <i class="bi bi-clock-history"></i>
-            Riwayat Scan
+            <span>Riwayat Scan</span>
         </a>
 
-        <div class="sidebar-label mt-5">System</div>
+        <!-- SYSTEM -->
+        <div class="sidebar-label">System</div>
 
-        <div class="px-3 py-3 small text-white-50">
+        <div class="system-info">
             SLOTIN Smart Parking<br>
-            <span class="text-white">MVP Version 1.0</span>
+            <span>MVP Version 1.0</span>
         </div>
+
+        <!-- LOGOUT -->
+        <div class="sidebar-bottom">
+
+            <form action="{{ route('logout') }}"
+                  method="POST"
+                  class="logout-form">
+
+                @csrf
+
+                <button type="submit" class="logout-button">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </button>
+
+            </form>
+
+        </div>
+
     </aside>
 
+    <!-- MAIN -->
     <main class="main-content">
 
+        <!-- TOPBAR -->
         <header class="topbar">
-            <h5 class="page-title">@yield('page-title', 'Dashboard')</h5>
+
+            <h5 class="page-title">
+                @yield('page-title', 'Dashboard')
+            </h5>
 
             <div class="d-flex align-items-center gap-3">
+
                 <div class="text-end">
-                    <div class="fw-bold small">Administrator</div>
-                    <div class="text-muted" style="font-size: 11px;">Admin</div>
+                    <div class="fw-bold small">
+                        {{ auth()->user()->name ?? 'Administrator' }}
+                    </div>
+
+                    <div class="text-muted" style="font-size: 11px;">
+                        Admin
+                    </div>
                 </div>
 
                 <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
                      style="width: 40px; height: 40px;">
                     <i class="bi bi-person-fill fs-5"></i>
                 </div>
+
             </div>
+
         </header>
 
+        <!-- PAGE CONTENT -->
         <div class="content-wrapper">
             @yield('content')
         </div>
 
     </main>
 
+    <!-- BOOTSTRAP JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')

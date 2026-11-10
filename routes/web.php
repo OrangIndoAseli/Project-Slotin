@@ -27,6 +27,10 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('dashboard');
     });
 
+    Route::get('/dashboard/realtime', [
+    DashboardController::class,
+    'realtime' ])->name('dashboard.realtime');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
